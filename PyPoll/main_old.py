@@ -11,33 +11,34 @@ with open("election_data.csv", newline="") as csvfile:
     # CSV reader specifies delimiter and variable that holds contents
     csvreader = csv.reader(csvfile, delimiter=",")
 
-    candidate = []
-    candidateCount = 0
-    #candidate = ["Khan", "Correy", "Li", "O'Tooley"]
+    candidate = ["Khan", "Correy", "Li", "O'Tooley"]
     votecount = [0,0,0,0]
     totalCount = 0
     csv_header = next(csvreader)
     #print(csv_header)
    
     for row in csvreader:
+        votename = row[2]
         totalCount = totalCount+1
-        if row[2] not in candidate:
-            candidate.append(row[2])
-            candidateCount = candidateCount + 1
-        for x in range(candidateCount):
-            if row[2] == candidate[x]:
-                votecount[x] += 1
-                
+        if votename  == candidate[0]:
+            votecount[0] = votecount[0]+1
+        if votename  == candidate[1]:
+            votecount[1] = votecount[1]+1
+        if votename  == candidate[2]:
+            votecount[2] = votecount[2]+1
+        if votename  == candidate[3]:
+            votecount[3] = votecount[3]+1
+        
     results = zip(candidate, votecount)
     print(candidate)
     print(votecount)
     
-   # output_file = os.path.join("PollOutput.csv")
+    output_file = os.path.join("PollOutput.csv")
 
 # open the output file, create a header row, and then write the zipped object to the csv
-#with open(output_file, "w", newline="") as datafile:
-    #writer = csv.writer(datafile)
+with open(output_file, "w", newline="") as datafile:
+    writer = csv.writer(datafile)
 
-    #writer.writerow(["Candidate", "Votes"])
+    writer.writerow(["Candidate", "Votes"])
 
-    #writer.writerows(results)
+    writer.writerows(results)
