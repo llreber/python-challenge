@@ -4,7 +4,7 @@ import csv
 #Set data file path - different folder
 #cereal_csv = os.path.join("~", "Downloads", "budget_data.csv") 
 #Set data file path - same folder
-cereal_csv = os.path.join("budget_data.csv") 
+bank_csv = os.path.join("budget_data.csv") 
 
 with open("budget_data.csv", newline="", encoding="utf8") as csvfile:
 
@@ -27,8 +27,10 @@ with open("budget_data.csv", newline="", encoding="utf8") as csvfile:
         MonthDiff = CurrMoPL - PrevMoPL
         if MonthDiff > GreatIncrease:
             GreatIncrease = MonthDiff
+            IncreaseMonth = row[0]
         if MonthDiff < GreatDecrease:
             GreatDecrease = MonthDiff
+            DecreaseMonth = row[0]
         if months == 1:
             FirstMoPL = float(row[1])
         LastMoPL = CurrMoPL
@@ -38,5 +40,18 @@ with open("budget_data.csv", newline="", encoding="utf8") as csvfile:
     print("Cumulative P&L: "+ str(cumPL))
     AvePLChange = (LastMoPL - FirstMoPL)/(months -1)
     print("Average monthly change: " + str(AvePLChange))
-    print("Greatest monthly increase: " + str(GreatIncrease))
-    print("Greatest monthly decrease: " + str(GreatDecrease))
+    print("Greatest monthly increase: " + IncreaseMonth +" "+ str(GreatIncrease))
+    print("Greatest monthly decrease: " + DecreaseMonth +" "+ str(GreatDecrease))
+
+    results = [months, cumPL, AvePLChange, IncreaseMonth, GreatIncrease, DecreaseMonth, GreatDecrease]
+    print(results)
+
+    output_file = os.path.join("PyBankOutput.csv")
+
+# open the output file, create a header row, and then write the zipped object to the csv
+with open(output_file, "w", newline="") as datafile:
+    writer = csv.writer(datafile)
+
+    writer.writerow(["Number of Months", "Cumulative P&L", "Average Monthly Change", "Month of Greatest Increase","Greatest Monthly Increase", "Month of Greatest Decrease","Greatest Monthly Decrease"])
+
+    writer.writerow(results)
