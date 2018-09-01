@@ -14,7 +14,8 @@ with open("election_data.csv", newline="") as csvfile:
     candidate = []
     candidateCount = 0
     #candidate = ["Khan", "Correy", "Li", "O'Tooley"]
-    votecount = [0,0,0,0]
+    votecount = [0, 0, 0, 0]
+    votePct = [0, 0, 0, 0]
     totalCount = 0
     csv_header = next(csvreader)
     #print(csv_header)
@@ -26,18 +27,31 @@ with open("election_data.csv", newline="") as csvfile:
             candidateCount = candidateCount + 1
         for x in range(candidateCount):
             if row[2] == candidate[x]:
-                votecount[x] += 1
-                
-    results = zip(candidate, votecount)
-    print(candidate)
-    print(votecount)
+                votecount[x] = votecount[x] + 1
+
+
+    for x in range(candidateCount):
+        votePct[x] = round(100*votecount[x]/totalCount, 2)
+                    
+    results = zip(candidate, votecount, votePct)
     
-   # output_file = os.path.join("PollOutput.csv")
+    winner = votecount.index(max(votecount))
+    print("Election Results")
+    print("Total Votes: " + str(totalCount))
+    for x in range(candidateCount):
+        print(candidate[x] + " " +str(votePct[x]) + "% (" +str(votecount[x]) + ")")
+   
+    print("Winner: " + candidate[winner])
+   
+    output_file = os.path.join("PollOutput.csv")
 
 # open the output file, create a header row, and then write the zipped object to the csv
-#with open(output_file, "w", newline="") as datafile:
-    #writer = csv.writer(datafile)
+with open(output_file, "w", newline="") as datafile:
+    writer = csv.writer(datafile)
 
-    #writer.writerow(["Candidate", "Votes"])
+    writer.writerow(["Election Results"])
+    writer.writerow(["Winner: ", candidate[winner]])
+    writer.writerow(["Total votes cast: ", totalCount])
+    writer.writerow(["Candidate", "Votes", "Percet of Votes"])
 
-    #writer.writerows(results)
+    writer.writerows(results)
