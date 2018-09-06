@@ -10,7 +10,7 @@ with open("election_data.csv", newline="") as csvfile:
 
     # CSV reader specifies delimiter and variable that holds contents
     csvreader = csv.reader(csvfile, delimiter=",")
-
+    # initialize variables
     candidate = []
     candidateCount = 0
     #candidate = ["Khan", "Correy", "Li", "O'Tooley"]
@@ -22,20 +22,26 @@ with open("election_data.csv", newline="") as csvfile:
    
     for row in csvreader:
         totalCount = totalCount+1
+        #check for unique candidate names and append to list
         if row[2] not in candidate:
             candidate.append(row[2])
             candidateCount = candidateCount + 1
+        #check the candidate woted for and increment the vote count
         for x in range(candidateCount):
             if row[2] == candidate[x]:
                 votecount[x] = votecount[x] + 1
 
-
+    #calculate the percent of votes received
     for x in range(candidateCount):
         votePct[x] = round(100*votecount[x]/totalCount, 2)
-                    
+
+    #create the results tuple                
     results = zip(candidate, votecount, votePct)
-    
+
+    #find the winner
     winner = votecount.index(max(votecount))
+    
+    #output the results to the screen
     print("Election Results")
     print("Total Votes: " + str(totalCount))
     for x in range(candidateCount):
@@ -53,5 +59,4 @@ with open(output_file, "w", newline="") as datafile:
     writer.writerow(["Winner: ", candidate[winner]])
     writer.writerow(["Total votes cast: ", totalCount])
     writer.writerow(["Candidate", "Votes", "Percet of Votes"])
-
     writer.writerows(results)
