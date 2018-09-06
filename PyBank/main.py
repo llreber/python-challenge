@@ -40,16 +40,18 @@ with open("budget_data.csv", newline="", encoding="utf8") as csvfile:
         LastMoPL = CurrMoPL
         PrevMoPL = CurrMoPL
     
-    #output the resulta to the screen
+    #output the results to the screen
+    print("Financial Analysis")
     print("Total Months: " + str(months))
     print("Cumulative P&L: "+ str(cumPL))
-    AvePLChange = (LastMoPL - FirstMoPL)/(months -1)
+    AvePLChange = round((LastMoPL - FirstMoPL)/(months -1),2)
     print("Average monthly change: " + str(AvePLChange))
     print("Greatest monthly increase: " + IncreaseMonth +" "+ str(GreatIncrease))
     print("Greatest monthly decrease: " + DecreaseMonth +" "+ str(GreatDecrease))
 
     results = [months, cumPL, AvePLChange, IncreaseMonth, GreatIncrease, DecreaseMonth, GreatDecrease]
-    print(results)
+    headings = ["Number of Months", "Cumulative P&L", "Average Monthly Change", "Month of Greatest Increase","Greatest Monthly Increase", "Month of Greatest Decrease","Greatest Monthly Decrease"]
+    combined = zip(headings, results)
 
     output_file = os.path.join("PyBankOutput.csv")
 
@@ -57,6 +59,6 @@ with open("budget_data.csv", newline="", encoding="utf8") as csvfile:
 with open(output_file, "w", newline="") as datafile:
     writer = csv.writer(datafile)
 
-    writer.writerow(["Number of Months", "Cumulative P&L", "Average Monthly Change", "Month of Greatest Increase","Greatest Monthly Increase", "Month of Greatest Decrease","Greatest Monthly Decrease"])
+    writer.writerow(["Financial Analysis"])
 
-    writer.writerow(results)
+    writer.writerows(combined)
